@@ -1,0 +1,4 @@
+StataSetup
+==========
+
+StataSetupFileStructure
