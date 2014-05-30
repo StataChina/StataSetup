@@ -1,18 +1,15 @@
 /*-------------------------------------------------------------------------------
 # Name:		00_SetupFolderGlobals
-# Purpose:	Create series of folders in a selected directory for the 
-		Joint Sahel Mapping Project 
+# Purpose:	Create series of folders in a selected directory Stata Projects
 # Author:	Tim Essam, Ph.D.
-# Created:	05/11/2013
-# Copyright:	USAID GeoCenter
+# Created:	05/29/2014
 # License:	<Tim Essam Consulting/OakStream Systems, LLC>
 # Ado(s):	confirmdir, mvfiles, fs (ssc install confirmdir)
 #-------------------------------------------------------------------------------
 */
-
+set more off
 *Make directories for the study*
-*install the confirm directory ado if not already installed
-/*Notes: scheme-burd scheme-mrc scheme_rbn1mono also used, but not checked */
+*install the confirm directory ado if not already installed along with other .ados needed for project
 local required_ados confirmdir mvfiles fs spatgsa variog adolist labellist
 foreach x of local required_ados { 
 	capture findfile `x'.ado
@@ -23,14 +20,26 @@ foreach x of local required_ados {
 	}
 *end
 
+*Determine path for the study (To be modified for each project)
+global projectpath "C:\Users\t\Box Sync\"
+cd "$projectpath"
 
-*Determine path for the study
-cd "C:\Users\t\Box Sync\nigerlsms"
-*mkdir C:\Users\t\Box Sync\nigerlsms
+*Run a macro to set up study main folder/path
+local pFolder GlobalHealthIndicators
+foreach dir in `pFolder' {
+	confirmdir "`dir'"
+	if `r(confirmdir)'==170 {
+		mkdir "`dir'"
+		display in yellow "Project directory named: `dir' created"
+		}
+	else disp as error "`dir' already exists, not created."
+	cd "$projectpath\`dir'"
+	}
+*end
 
 *Run initially to set up folder structure
 *Choose your folders to set up as the local macro `folders'
-local folders Rawdata Dofiles Datain Log Output Dataout Excel PDF Word Graph GIS Export
+local folders Rawdata Dofiles Datain Log Output Dataout Excel PDF Word Graph GIS Export R
 foreach dir in `folders' {
 	confirmdir "`dir'"
 	if `r(confirmdir)'==170 {
@@ -57,11 +66,10 @@ global pathreg "`dir'\Output"
 global pathgis "`dir'\GIS"
 global pathraw "`dir'\Rawdata"
 global pathexport "`dir'\Export"
-*global pathRin "C:\Users\t\Box Sync\R\DataInStata"
-global pathRin "C:\Users\t\Box Sync\nigerlsms"
-
-* List macros to verfiy 
+global pathR "`dir'\R"
 macro list 
 
+/*------------------------------------------------------------
+# Manually copy/download data into Datain or Rawdata Folder #
 
 
