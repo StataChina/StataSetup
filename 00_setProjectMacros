@@ -3,7 +3,7 @@
 # Purpose:	Create series of folders in a selected directory Stata Projects
 # Author:	Tim Essam, Ph.D.
 # Created:	05/29/2014
-# License:	<Tim Essam Consulting/OakStream Systems, LLC>
+# Affiliations:	<Tim Essam Consulting/OakStream Systems, LLC>
 # Ado(s):	confirmdir, mvfiles, fs (ssc install confirmdir)
 #-------------------------------------------------------------------------------
 */
